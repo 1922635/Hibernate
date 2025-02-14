@@ -7,6 +7,9 @@ import javax.persistence.*;
 
 public class Venta_Cliente
 {
+    @Id
     private int venta_id;
+
+    @Id
     private int cliente_id;
 }

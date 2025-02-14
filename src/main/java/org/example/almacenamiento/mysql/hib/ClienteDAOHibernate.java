@@ -1,26 +1,25 @@
 package org.example.almacenamiento.mysql.hib;
 
-import org.example.modelos.Producto;
-import org.example.persistencia.dao.ProductoDAO;
+import org.example.modelos.Cliente;
+import org.example.persistencia.dao.ClienteDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class ProductoDAOHibernate implements ProductoDAO
+public class ClienteDAOHibernate implements ClienteDAO
 {
+    public static ClienteDAOHibernate SINGLETON = new ClienteDAOHibernate();
 
-    public static ProductoDAOHibernate SINGLETON = new ProductoDAOHibernate();
-
-    private ProductoDAOHibernate() {}
+    private ClienteDAOHibernate() {}
 
     @Override
-    public void create(Producto producto)
+    public void create(Cliente cliente)
     {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.save(producto);
+            session.save(cliente);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,9 +27,9 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public Producto read(int id) {
+    public Cliente read(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Producto.class, id);
+            return session.get(Cliente.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -38,9 +37,9 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public List<Producto> read() {
+    public List<Cliente> read() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Producto> query = session.createQuery("FROM Producto", Producto.class);
+            Query<Cliente> query = session.createQuery("FROM Cliente", Cliente.class);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,11 +48,11 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public boolean update(Producto producto) {
+    public boolean update(Cliente cliente) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.update(producto);
+            session.update(cliente);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -64,11 +63,11 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public boolean delete(Producto producto) {
+    public boolean delete(Cliente cliente) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.delete(producto);
+            session.delete(cliente);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -85,14 +84,14 @@ public class ProductoDAOHibernate implements ProductoDAO
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("DELETE FROM Producto");
+            Query query = session.createQuery("DELETE FROM Cliente");
             int rowsAffected = query.executeUpdate();
-            session.createNativeQuery("ALTER TABLE producto AUTO_INCREMENT = 1").executeUpdate();
+            session.createNativeQuery("ALTER TABLE cliente AUTO_INCREMENT = 1").executeUpdate();
 
             transaction.commit();
             success = true;
 
-            System.out.println("Se eliminaron " + rowsAffected + " productos.");
+            System.out.println("Se eliminaron " + rowsAffected + " clientes.");
         } catch (Exception e) {
             e.printStackTrace();
         }

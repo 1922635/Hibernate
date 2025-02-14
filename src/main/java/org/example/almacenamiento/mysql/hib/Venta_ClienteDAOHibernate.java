@@ -1,26 +1,25 @@
 package org.example.almacenamiento.mysql.hib;
 
-import org.example.modelos.Producto;
-import org.example.persistencia.dao.ProductoDAO;
+import org.example.modelos.Venta_Cliente;
+import org.example.persistencia.dao.Venta_ClienteDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class ProductoDAOHibernate implements ProductoDAO
+public class Venta_ClienteDAOHibernate implements Venta_ClienteDAO
 {
+    public static Venta_ClienteDAOHibernate SINGLETON = new Venta_ClienteDAOHibernate();
 
-    public static ProductoDAOHibernate SINGLETON = new ProductoDAOHibernate();
-
-    private ProductoDAOHibernate() {}
+    private Venta_ClienteDAOHibernate() {}
 
     @Override
-    public void create(Producto producto)
+    public void create(Venta_Cliente venta_cliente)
     {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.save(producto);
+            session.save(venta_cliente);
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,9 +27,9 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public Producto read(int id) {
+    public Venta_Cliente read(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Producto.class, id);
+            return session.get(Venta_Cliente.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -38,9 +37,9 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public List<Producto> read() {
+    public List<Venta_Cliente> read() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Producto> query = session.createQuery("FROM Producto", Producto.class);
+            Query<Venta_Cliente> query = session.createQuery("FROM Venta_Cliente", Venta_Cliente.class);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,11 +48,11 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public boolean update(Producto producto) {
+    public boolean update(Venta_Cliente venta_cliente) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.update(producto);
+            session.update(venta_cliente);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -64,11 +63,11 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public boolean delete(Producto producto) {
+    public boolean delete(Venta_Cliente venta_cliente) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.delete(producto);
+            session.delete(venta_cliente);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -85,14 +84,14 @@ public class ProductoDAOHibernate implements ProductoDAO
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("DELETE FROM Producto");
+            Query query = session.createQuery("DELETE FROM Venta_Cliente");
             int rowsAffected = query.executeUpdate();
-            session.createNativeQuery("ALTER TABLE producto AUTO_INCREMENT = 1").executeUpdate();
+            session.createNativeQuery("ALTER TABLE venta_cliente AUTO_INCREMENT = 1").executeUpdate();
 
             transaction.commit();
             success = true;
 
-            System.out.println("Se eliminaron " + rowsAffected + " productos.");
+            System.out.println("Se eliminaron " + rowsAffected + " filas.");
         } catch (Exception e) {
             e.printStackTrace();
         }
