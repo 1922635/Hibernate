@@ -12,6 +12,9 @@ public class VentaDAOHibernate implements VentaDAO
 {
     public static VentaDAOHibernate SINGLETON = new VentaDAOHibernate();
 
+    public static VentaDAOHibernate getSINGLETON() { return SINGLETON; }
+
+
     private VentaDAOHibernate() {}
 
     @Override

@@ -24,6 +24,19 @@ public class Cliente
     @Column(nullable = false, length = 400)
     private String direccion; // VARCHAR
 
+    private static int ultimoId = -1;
+
+    public Cliente() {}
+
+    public Cliente(String nombre, String email, String telefono, String direccion)
+    {
+        this.id = ++ultimoId;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+        this.direccion = direccion;
+    }
+
     @Override
     public String toString()
     {

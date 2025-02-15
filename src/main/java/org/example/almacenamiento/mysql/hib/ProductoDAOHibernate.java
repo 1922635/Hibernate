@@ -13,6 +13,8 @@ public class ProductoDAOHibernate implements ProductoDAO
 
     public static ProductoDAOHibernate SINGLETON = new ProductoDAOHibernate();
 
+    public static ProductoDAOHibernate getSINGLETON() { return SINGLETON; }
+
     private ProductoDAOHibernate() {}
 
     @Override
@@ -28,7 +30,8 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public Producto read(int id) {
+    public Producto read(int id)
+    {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Producto.class, id);
         } catch (Exception e) {
@@ -38,7 +41,8 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public List<Producto> read() {
+    public List<Producto> read()
+    {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Producto> query = session.createQuery("FROM Producto", Producto.class);
             return query.list();
@@ -49,7 +53,8 @@ public class ProductoDAOHibernate implements ProductoDAO
     }
 
     @Override
-    public boolean update(Producto producto) {
+    public boolean update(Producto producto)
+    {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();

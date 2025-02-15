@@ -12,6 +12,9 @@ public class ClienteDAOHibernate implements ClienteDAO
 {
     public static ClienteDAOHibernate SINGLETON = new ClienteDAOHibernate();
 
+    public static ClienteDAOHibernate getSINGLETON() { return SINGLETON; }
+
+
     private ClienteDAOHibernate() {}
 
     @Override

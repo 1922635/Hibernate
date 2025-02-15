@@ -1,5 +1,7 @@
 package org.example.modelos;
 
+import org.example.almacenamiento.mysql.hib.ProductoDAOHibernate;
+
 import javax.persistence.*;
 
 @Entity
@@ -23,11 +25,13 @@ public class Producto
     @Column(nullable = false)
     private int stock;
 
+    private static int ultimoId = -1;
+
     public Producto() {}
 
-    public Producto(int id, String nombre, float precio_compra, float precio_venta, int stock)
+    public Producto(String nombre, float precio_compra, float precio_venta, int stock)
     {
-        this.id = id;
+        this.id = ++ultimoId;
         this.nombre = nombre;
         this.precio_compra = precio_compra;
         this.precio_venta = precio_venta;
@@ -44,11 +48,11 @@ public class Producto
 
     public float getPrecio_compra() { return precio_compra; }
 
-    public float setPrecio_compra() { return precio_compra; }
+    public void setPrecio_compra(float precio_compra) { this.precio_compra = precio_compra; }
 
     public float getPrecio_venta() { return precio_venta; }
 
-    public float setPrecio_venta() { return precio_venta; }
+    public void setPrecio_venta(float precio_venta) { this.precio_venta = precio_venta; }
 
     public float getStock() { return stock; }
 
