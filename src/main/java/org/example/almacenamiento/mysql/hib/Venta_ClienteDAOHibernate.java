@@ -12,6 +12,8 @@ public class Venta_ClienteDAOHibernate implements Venta_ClienteDAO
 {
     public static Venta_ClienteDAOHibernate SINGLETON = new Venta_ClienteDAOHibernate();
 
+    public static Venta_ClienteDAOHibernate getSINGLETON() { return SINGLETON; }
+
     private Venta_ClienteDAOHibernate() {}
 
     @Override
@@ -40,6 +42,19 @@ public class Venta_ClienteDAOHibernate implements Venta_ClienteDAO
     public List<Venta_Cliente> read() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Venta_Cliente> query = session.createQuery("FROM Venta_Cliente", Venta_Cliente.class);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Venta_Cliente> findByClienteId(int cliente_id)
+    {
+        try (Session session = HibernateUtil.getSessionFactory().openSession())
+        {
+            Query<Venta_Cliente> query = session.createQuery("FROM Venta_Cliente WHERE cliente_id = :cliente_id", Venta_Cliente.class);
+            query.setParameter("cliente_id", cliente_id);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();

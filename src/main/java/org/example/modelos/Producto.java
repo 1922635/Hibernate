@@ -1,7 +1,5 @@
 package org.example.modelos;
 
-import org.example.almacenamiento.mysql.hib.ProductoDAOHibernate;
-
 import javax.persistence.*;
 
 @Entity

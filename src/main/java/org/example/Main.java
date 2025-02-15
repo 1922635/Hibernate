@@ -1,12 +1,10 @@
 package org.example;
 
-import org.example.almacenamiento.mysql.hib.ClienteDAOHibernate;
-import org.example.almacenamiento.mysql.hib.HibernateUtil;
-import org.example.almacenamiento.mysql.hib.ProductoDAOHibernate;
-import org.example.almacenamiento.mysql.hib.VentaDAOHibernate;
+import org.example.almacenamiento.mysql.hib.*;
 import org.example.modelos.Cliente;
 import org.example.modelos.Producto;
 import org.example.modelos.Venta;
+import org.example.modelos.Venta_Cliente;
 import org.example.persistencia.dao.ProductoDAO;
 
 import java.sql.Date;
@@ -19,6 +17,7 @@ public class Main
     private static ProductoDAOHibernate productoDAOHibernate = ProductoDAOHibernate.getSINGLETON();
     private static ClienteDAOHibernate clienteDAOHibernate = ClienteDAOHibernate.getSINGLETON();
     private static VentaDAOHibernate ventaDAOHibernate = VentaDAOHibernate.getSINGLETON();
+    private static Venta_ClienteDAOHibernate ventaClienteDAOHibernate = Venta_ClienteDAOHibernate.getSINGLETON();
 
     public static void main(String[] args)
     {
@@ -99,7 +98,7 @@ public class Main
 
     public static void modificarProducto()
     {
-        System.out.println("Introduzca el nombre del producto que desea modificar:");
+        System.out.println("Introduzca el id del producto que desea modificar:");
         int id = leerEntero();
         Producto producto = productoDAOHibernate.read(id);
 
@@ -161,13 +160,20 @@ public class Main
     {
         System.out.println("Opción no implementada");
 
-        /* System.out.println("Introduzca el id del cliente que desea eliminar");
+        System.out.println("Introduzca el id del cliente que desea eliminar");
         int id = leerEntero();
-        Cliente cliente = clienteDAOHibernate.read(id);
-         */
-        // Tengo que comprobar si el cliente aparece en venta_cliente y eliminar primero eso
 
-        // System.out.println(productoDAOHibernate.delete(producto)?"Producto borrado":"No se ha podido borrar el producto");
+        List<Venta_Cliente> ventas = Venta_ClienteDAOHibernate.getSINGLETON().findByClienteId(id);
+        if (ventas != null && !ventas.isEmpty())
+        {
+            System.out.println("El cliente " + id + " tiene ventas asociadas, estas se eliminarán también.");
+            for (Venta_Cliente venta : ventas)
+            {
+                System.out.println(ventaClienteDAOHibernate.delete(venta)?"Venta borrada":"No se ha podido borrar la venta");
+            }
+        }
+        Cliente cliente = clienteDAOHibernate.read(id);
+        System.out.println(clienteDAOHibernate.delete(cliente)?"Cliente borrado":"No se ha podido borrar el cliente");
     }
 
     public static void listarClientes()
